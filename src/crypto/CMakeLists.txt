@@ -1,5 +1,5 @@
 add_library(
-    ${CMAKE_PROJECT_NAME}
+    crypto
     STATIC
     crypto.cpp
     aead/AEAD.cpp
@@ -7,7 +7,7 @@ add_library(
     codec/codec.cpp
     md/SHA256.cpp)
 
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE MbedTLS::mbedcrypto)
+target_include_directories(crypto PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_link_libraries(crypto PRIVATE MbedTLS::mbedcrypto)
 
-add_library(ocfbnj::${CMAKE_PROJECT_NAME} ALIAS ${CMAKE_PROJECT_NAME})
+add_library(ocfbnj::crypto ALIAS crypto)
