@@ -31,6 +31,10 @@ public:
                         std::span<const std::uint8_t> ciphertext,
                         std::span<std::uint8_t> plaintext);
 
+    std::size_t getKeySize() const;
+    std::size_t getIvSize() const;
+    std::size_t getTagSize() const;
+
     static constexpr std::size_t keySize(Method method) {
         switch (method) {
         case ChaCha20Poly1305:

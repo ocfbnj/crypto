@@ -100,5 +100,17 @@ std::size_t AEAD::decrypt(std::span<const std::uint8_t> key,
 
     return olen;
 }
+
+std::size_t AEAD::getKeySize() const {
+    return keySize(method);
+}
+
+std::size_t AEAD::getIvSize() const {
+    return ivSize(method);
+}
+
+std::size_t AEAD::getTagSize() const {
+    return tagSize(method);
+}
 } // namespace aead
 } // namespace crypto
