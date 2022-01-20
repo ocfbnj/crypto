@@ -112,5 +112,9 @@ std::size_t AEAD::getIvSize() const {
 std::size_t AEAD::getTagSize() const {
     return tagSize(method);
 }
+
+AEAD::Method AEAD::getMethod() const {
+    return method;
+}
 } // namespace aead
 } // namespace crypto

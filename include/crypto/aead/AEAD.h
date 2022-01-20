@@ -35,6 +35,8 @@ public:
     std::size_t getIvSize() const;
     std::size_t getTagSize() const;
 
+    Method getMethod() const;
+
     static constexpr std::size_t keySize(Method method) {
         switch (method) {
         case ChaCha20Poly1305:
