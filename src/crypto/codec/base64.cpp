@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <mbedtls/base64.h>
 
 #include <crypto/codec/base64.h>
