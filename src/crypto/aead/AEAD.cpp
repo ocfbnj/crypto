@@ -1,5 +1,5 @@
 #include <cassert>
-#include <cstdlib>
+#include <cstring>
 
 #include <mbedtls/cipher.h>
 
