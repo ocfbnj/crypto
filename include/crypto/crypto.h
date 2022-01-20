@@ -5,7 +5,6 @@
 #include <span>
 #include <string>
 
-namespace ocfbnj {
 namespace crypto {
 // increment increment the number (little endian) by one.
 void increment(std::span<std::uint8_t> num);
@@ -28,6 +27,5 @@ void hkdfSha1(std::span<const std::uint8_t> key,
               std::span<const std::uint8_t> info,
               std::span<std::uint8_t> subkey);
 } // namespace crypto
-} // namespace ocfbnj
 
 #endif

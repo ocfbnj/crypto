@@ -3,7 +3,6 @@
 
 #include <stdexcept>
 
-namespace ocfbnj {
 namespace crypto {
 namespace codec {
 class DecodingError : public std::runtime_error {
@@ -12,6 +11,5 @@ public:
 };
 } // namespace codec
 } // namespace crypto
-} // namespace ocfbnj
 
 #endif

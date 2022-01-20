@@ -3,7 +3,6 @@
 #include <crypto/codec/base64.h>
 #include <crypto/codec/codec.h>
 
-namespace ocfbnj {
 namespace crypto {
 namespace codec {
 namespace base64 {
@@ -29,7 +28,7 @@ std::vector<std::uint8_t> decode(std::span<const std::uint8_t> src) {
     int ret = mbedtls_base64_decode(res.data(), res.size(), &olen, src.data(), src.size());
 
     if (ret == MBEDTLS_ERR_BASE64_INVALID_CHARACTER) {
-        throw ocfbnj::crypto::codec::DecodingError{"base64 invalid character"};
+        throw crypto::codec::DecodingError{"base64 invalid character"};
     }
 
     assert(ret == 0);
@@ -41,4 +40,3 @@ std::vector<std::uint8_t> decode(std::span<const std::uint8_t> src) {
 } // namespace base64
 } // namespace codec
 } // namespace crypto
-} // namespace ocfbnj

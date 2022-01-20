@@ -5,9 +5,6 @@
 #include <span>
 #include <vector>
 
-#include <mbedtls/md.h>
-
-namespace ocfbnj {
 namespace crypto {
 namespace md {
 class SHA256 {
@@ -24,10 +21,9 @@ public:
     std::vector<std::uint8_t> finish();
 
 private:
-    mbedtls_md_context_t ctx;
+    void* ptr;
 };
 } // namespace md
 } // namespace crypto
-} // namespace ocfbnj
 
 #endif

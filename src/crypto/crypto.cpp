@@ -6,7 +6,6 @@
 #include <mbedtls/hkdf.h>
 #include <mbedtls/md.h>
 
-namespace ocfbnj {
 namespace crypto {
 void increment(std::span<std::uint8_t> num) {
     std::size_t len = num.size();
@@ -80,4 +79,3 @@ void hkdfSha1(std::span<const std::uint8_t> key,
                  subkey.data(), subkey.size());
 }
 } // namespace crypto
-} // namespace ocfbnj

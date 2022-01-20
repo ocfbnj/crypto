@@ -5,24 +5,19 @@
 #include <memory>
 #include <span>
 
-#include <mbedtls/cipher.h>
-
-namespace ocfbnj {
 namespace crypto {
 inline namespace aead {
 class AEAD {
 public:
-    enum class Method {
+    enum Method {
         ChaCha20Poly1305,
         AES128GCM,
         AES256GCM,
         Invalid
     };
 
-    static std::unique_ptr<AEAD> create(Method method);
-
     AEAD(Method method);
-    virtual ~AEAD();
+    ~AEAD();
 
     std::size_t encrypt(std::span<const std::uint8_t> key,
                         std::span<const std::uint8_t> iv,
@@ -36,15 +31,45 @@ public:
                         std::span<const std::uint8_t> ciphertext,
                         std::span<std::uint8_t> plaintext);
 
-    virtual std::size_t keySize() const = 0;
-    virtual std::size_t ivSize() const = 0;
-    virtual std::size_t tagSize() const = 0;
+    static constexpr std::size_t keySize(Method method) {
+        switch (method) {
+        case ChaCha20Poly1305:
+        case AES256GCM:
+            return 32;
+        case AES128GCM:
+            return 16;
+        default:
+            return 0;
+        }
+    }
+
+    static constexpr std::size_t ivSize(Method method) {
+        switch (method) {
+        case ChaCha20Poly1305:
+        case AES256GCM:
+        case AES128GCM:
+            return 12;
+        default:
+            return 0;
+        }
+    }
+
+    static constexpr std::size_t tagSize(Method method) {
+        switch (method) {
+        case ChaCha20Poly1305:
+        case AES256GCM:
+        case AES128GCM:
+            return 16;
+        default:
+            return 0;
+        }
+    }
 
 private:
-    mbedtls_cipher_context_t ctx;
+    Method method;
+    void* ptr;
 };
 } // namespace aead
 } // namespace crypto
-} // namespace ocfbnj
 
 #endif

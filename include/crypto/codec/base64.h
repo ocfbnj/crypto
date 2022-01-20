@@ -5,7 +5,6 @@
 #include <span>
 #include <vector>
 
-namespace ocfbnj {
 namespace crypto {
 namespace codec {
 namespace base64 {
@@ -18,6 +17,5 @@ std::vector<std::uint8_t> decode(std::span<const std::uint8_t> src);
 } // namespace base64
 } // namespace codec
 } // namespace crypto
-} // namespace ocfbnj
 
 #endif
