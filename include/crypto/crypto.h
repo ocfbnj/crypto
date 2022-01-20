@@ -26,6 +26,9 @@ void hkdfSha1(std::span<const std::uint8_t> key,
               std::span<const std::uint8_t> salt,
               std::span<const std::uint8_t> info,
               std::span<std::uint8_t> subkey);
+
+// randomBytes generate random bytes.
+void randomBytes(std::span<std::uint8_t> bytes);
 } // namespace crypto
 
 #endif

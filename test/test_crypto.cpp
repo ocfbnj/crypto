@@ -229,3 +229,8 @@ TEST(hkdfSha1, key256) {
     hkdfSha1(key, salt, toSpan("ss-subkey"), subkey);
     ASSERT_EQ(subkey, expectSubkey);
 }
+
+TEST(random, generate) {
+    std::array<std::uint8_t, 32> bytes;
+    randomBytes(bytes);
+}

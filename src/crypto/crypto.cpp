@@ -1,10 +1,13 @@
+#include <cassert>
 #include <iomanip>
 #include <sstream>
 
-#include <crypto/crypto.h>
-
+#include <mbedtls/ctr_drbg.h>
+#include <mbedtls/entropy.h>
 #include <mbedtls/hkdf.h>
 #include <mbedtls/md.h>
+
+#include <crypto/crypto.h>
 
 namespace crypto {
 void increment(std::span<std::uint8_t> num) {
@@ -77,5 +80,22 @@ void hkdfSha1(std::span<const std::uint8_t> key,
                  key.data(), key.size(),
                  info.data(), info.size(),
                  subkey.data(), subkey.size());
+}
+
+void randomBytes(std::span<std::uint8_t> bytes) {
+    mbedtls_ctr_drbg_context ctrDrbg;
+    mbedtls_ctr_drbg_init(&ctrDrbg);
+
+    mbedtls_entropy_context entropy;
+    mbedtls_entropy_init(&entropy);
+
+    int ret = mbedtls_ctr_drbg_seed(&ctrDrbg, mbedtls_entropy_func, &entropy, nullptr, 0);
+    assert(ret == 0);
+
+    ret = mbedtls_ctr_drbg_random(&ctrDrbg, bytes.data(), bytes.size());
+    assert(ret == 0);
+
+    mbedtls_entropy_free(&entropy);
+    mbedtls_ctr_drbg_free(&ctrDrbg);
 }
 } // namespace crypto
