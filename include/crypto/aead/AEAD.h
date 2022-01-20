@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <memory>
 #include <span>
+#include <stdexcept>
 
 namespace crypto {
 inline namespace aead {
@@ -14,6 +15,11 @@ public:
         AES128GCM,
         AES256GCM,
         Invalid
+    };
+
+    class DecryptionError : public std::runtime_error {
+    public:
+        using std::runtime_error::runtime_error;
     };
 
     AEAD(Method method);
