@@ -7,7 +7,7 @@ add_library(
     codec/codec.cpp
     md/SHA256.cpp)
 
-target_include_directories(crypto PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(crypto PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 target_link_libraries(crypto PRIVATE MbedTLS::mbedcrypto)
 
 add_library(ocfbnj::crypto ALIAS crypto)
