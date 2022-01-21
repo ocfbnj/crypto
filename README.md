@@ -1,3 +1,3 @@
 # crypto
 
-A cryptography library wrapped in mbedtls.
+A cryptography library that encapsulates mbedtls.
