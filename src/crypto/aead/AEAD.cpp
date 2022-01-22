@@ -98,7 +98,7 @@ std::size_t AEAD::decrypt(std::span<const std::uint8_t> key,
                                           &olen,
                                           tagSize(method));
     if (ret != 0) {
-        throw DecryptionError{"decryption error"};
+        throw DecryptionError{"Decryption error"};
     }
 
     return olen;
