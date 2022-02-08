@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            ./build/src/test/test_crypto.exe
+            ./build/test/test_crypto.exe
           else
-            ./build/src/test/test_crypto
+            ./build/test/test_crypto
           fi
