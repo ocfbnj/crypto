@@ -2,6 +2,7 @@
 
 #include <crypto/aead/AEAD.h>
 #include <crypto/codec/base64.h>
+#include <crypto/codec/codec.h>
 #include <crypto/crypto.h>
 #include <crypto/md/SHA256.h>
 
@@ -49,11 +50,26 @@ TEST(toHexStream, size16) {
 }
 
 TEST(base64, encode) {
+    ASSERT_EQ(toString(codec::base64::encode(toSpan("hello worl"))), "aGVsbG8gd29ybA==");
     ASSERT_EQ(toString(codec::base64::encode(toSpan("hello world"))), "aGVsbG8gd29ybGQ=");
+    ASSERT_EQ(toString(codec::base64::encode(toSpan("hello world!"))), "aGVsbG8gd29ybGQh");
 }
 
 TEST(base64, decode) {
+    ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybA=="))), "hello worl");
     ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybGQ="))), "hello world");
+    ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybGQh"))), "hello world!");
+}
+
+TEST(base64, invalid_character) {
+    try {
+        codec::base64::decode(toSpan("a`"));
+    } catch (const crypto::codec::DecodingError& e) {
+        EXPECT_EQ(e.what(), std::string{"base64 invalid character"});
+        return;
+    }
+
+    FAIL() << "Expected crypto::codec::DecodingError";
 }
 
 TEST(sha256, get) {
