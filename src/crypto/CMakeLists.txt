@@ -4,6 +4,7 @@ add_library(
     crypto.cpp
     aead/AEAD.cpp
     codec/base64.cpp
+    codec/base64url.cpp
     codec/codec.cpp
     md/SHA256.cpp)
 

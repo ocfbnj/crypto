@@ -4,6 +4,7 @@
 
 #include <crypto/aead/AEAD.h>
 #include <crypto/codec/base64.h>
+#include <crypto/codec/base64url.h>
 #include <crypto/codec/codec.h>
 #include <crypto/crypto.h>
 #include <crypto/md/SHA256.h>
@@ -52,22 +53,53 @@ TEST(toHexStream, size16) {
 }
 
 TEST(base64, encode) {
+    ASSERT_EQ(toString(codec::base64::encode(toSpan(""))), "");
     ASSERT_EQ(toString(codec::base64::encode(toSpan("hello worl"))), "aGVsbG8gd29ybA==");
     ASSERT_EQ(toString(codec::base64::encode(toSpan("hello world"))), "aGVsbG8gd29ybGQ=");
     ASSERT_EQ(toString(codec::base64::encode(toSpan("hello world!"))), "aGVsbG8gd29ybGQh");
+    ASSERT_EQ(toString(codec::base64::encode(toSpan("<<???>>"))), "PDw/Pz8+Pg==");
 }
 
 TEST(base64, decode) {
+    ASSERT_EQ(toString(codec::base64::decode(toSpan(""))), "");
     ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybA=="))), "hello worl");
     ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybGQ="))), "hello world");
     ASSERT_EQ(toString(codec::base64::decode(toSpan("aGVsbG8gd29ybGQh"))), "hello world!");
+    ASSERT_EQ(toString(codec::base64::decode(toSpan("PDw/Pz8+Pg=="))), "<<???>>");
 }
 
 TEST(base64, invalid_character) {
     try {
         codec::base64::decode(toSpan("a`"));
-    } catch (const crypto::codec::DecodingError& e) {
+    } catch (const codec::DecodingError& e) {
         EXPECT_EQ(e.what(), std::string{"base64 invalid character"});
+        return;
+    }
+
+    FAIL() << "Expected crypto::codec::DecodingError";
+}
+
+TEST(base64url, encode) {
+    ASSERT_EQ(toString(codec::experimental::base64url::encode(toSpan(""))), "");
+    ASSERT_EQ(toString(codec::experimental::base64url::encode(toSpan("hello worl"))), "aGVsbG8gd29ybA");
+    ASSERT_EQ(toString(codec::experimental::base64url::encode(toSpan("hello world"))), "aGVsbG8gd29ybGQ");
+    ASSERT_EQ(toString(codec::experimental::base64url::encode(toSpan("hello world!"))), "aGVsbG8gd29ybGQh");
+    ASSERT_EQ(toString(codec::experimental::base64url::encode(toSpan("<<???>>"))), "PDw_Pz8-Pg");
+}
+
+TEST(base64url, decode) {
+    ASSERT_EQ(toString(codec::experimental::base64url::decode(toSpan(""))), "");
+    ASSERT_EQ(toString(codec::experimental::base64url::decode(toSpan("aGVsbG8gd29ybA"))), "hello worl");
+    ASSERT_EQ(toString(codec::experimental::base64url::decode(toSpan("aGVsbG8gd29ybGQ"))), "hello world");
+    ASSERT_EQ(toString(codec::experimental::base64url::decode(toSpan("aGVsbG8gd29ybGQh"))), "hello world!");
+    ASSERT_EQ(toString(codec::experimental::base64url::decode(toSpan("PDw_Pz8-Pg"))), "<<???>>");
+}
+
+TEST(base64url, invalid_input) {
+    try {
+        codec::experimental::base64url::decode(toSpan("aGVsbG8gd29yb"));
+    } catch (const codec::DecodingError& e) {
+        EXPECT_EQ(e.what(), std::string{"base64url invalid input"});
         return;
     }
 
