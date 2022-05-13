@@ -4,11 +4,10 @@
 
 #include <mbedtls/cipher.h>
 
-#include <crypto/aead/AEAD.h>
+#include <crypto/aead.h>
 
 namespace crypto {
-inline namespace aead {
-AEAD::AEAD(Method method) : method(method) {
+aead::aead(method m) : m(m) {
     ptr = malloc(sizeof(mbedtls_cipher_context_t));
     assert(ptr != nullptr);
     memset(ptr, 0, sizeof(mbedtls_cipher_context_t));
@@ -18,14 +17,14 @@ AEAD::AEAD(Method method) : method(method) {
     mbedtls_cipher_init(ctx);
 
     mbedtls_cipher_type_t cipherType;
-    switch (method) {
-    case ChaCha20Poly1305:
+    switch (m) {
+    case chacha20_poly1305:
         cipherType = MBEDTLS_CIPHER_CHACHA20_POLY1305;
         break;
-    case AES128GCM:
+    case aes_128_gcm:
         cipherType = MBEDTLS_CIPHER_AES_128_GCM;
         break;
-    case AES256GCM:
+    case aes_256_gcm:
         cipherType = MBEDTLS_CIPHER_AES_256_GCM;
         break;
     default:
@@ -38,7 +37,7 @@ AEAD::AEAD(Method method) : method(method) {
     assert(ret == 0);
 }
 
-AEAD::~AEAD() {
+aead::~aead() {
     auto ctx = static_cast<mbedtls_cipher_context_t*>(ptr);
     assert(ctx != nullptr);
 
@@ -46,14 +45,14 @@ AEAD::~AEAD() {
     free(ctx);
 }
 
-std::size_t AEAD::encrypt(std::span<const std::uint8_t> key,
+std::size_t aead::encrypt(std::span<const std::uint8_t> key,
                           std::span<const std::uint8_t> iv,
                           std::span<const std::uint8_t> ad,
                           std::span<const std::uint8_t> plaintext,
                           std::span<std::uint8_t> ciphertext) {
-    assert(key.size() == keySize(method));
-    assert(iv.size() == ivSize(method));
-    assert(ciphertext.size() == plaintext.size() + tagSize(method));
+    assert(key.size() == key_size(m));
+    assert(iv.size() == iv_size(m));
+    assert(ciphertext.size() == plaintext.size() + tag_size(m));
 
     auto ctx = static_cast<mbedtls_cipher_context_t*>(ptr);
     assert(ctx != nullptr);
@@ -68,20 +67,20 @@ std::size_t AEAD::encrypt(std::span<const std::uint8_t> key,
                                           plaintext.data(), plaintext.size(),
                                           ciphertext.data(), ciphertext.size(),
                                           &olen,
-                                          tagSize(method));
+                                          tag_size(m));
     assert(ret == 0);
 
     return olen;
 }
 
-std::size_t AEAD::decrypt(std::span<const std::uint8_t> key,
+std::size_t aead::decrypt(std::span<const std::uint8_t> key,
                           std::span<const std::uint8_t> iv,
                           std::span<const std::uint8_t> ad,
                           std::span<const std::uint8_t> ciphertext,
                           std::span<std::uint8_t> plaintext) {
-    assert(key.size() == keySize(method));
-    assert(iv.size() == ivSize(method));
-    assert(ciphertext.size() == plaintext.size() + tagSize(method));
+    assert(key.size() == key_size(m));
+    assert(iv.size() == iv_size(m));
+    assert(ciphertext.size() == plaintext.size() + tag_size(m));
 
     auto ctx = static_cast<mbedtls_cipher_context_t*>(ptr);
     assert(ctx != nullptr);
@@ -96,28 +95,27 @@ std::size_t AEAD::decrypt(std::span<const std::uint8_t> key,
                                           ciphertext.data(), ciphertext.size(),
                                           plaintext.data(), plaintext.size(),
                                           &olen,
-                                          tagSize(method));
+                                          tag_size(m));
     if (ret != 0) {
-        throw DecryptionError{"Decryption error"};
+        throw decryption_error{"Decryption error"};
     }
 
     return olen;
 }
 
-std::size_t AEAD::getKeySize() const {
-    return keySize(method);
+std::size_t aead::get_key_size() const {
+    return key_size(m);
 }
 
-std::size_t AEAD::getIvSize() const {
-    return ivSize(method);
+std::size_t aead::get_iv_size() const {
+    return iv_size(m);
 }
 
-std::size_t AEAD::getTagSize() const {
-    return tagSize(method);
+std::size_t aead::get_tag_size() const {
+    return tag_size(m);
 }
 
-AEAD::Method AEAD::getMethod() const {
-    return method;
+aead::method aead::get_method() const {
+    return m;
 }
-} // namespace aead
 } // namespace crypto

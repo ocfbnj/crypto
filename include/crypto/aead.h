@@ -7,23 +7,22 @@
 #include <stdexcept>
 
 namespace crypto {
-inline namespace aead {
-class AEAD {
+class aead {
 public:
-    enum Method {
-        ChaCha20Poly1305,
-        AES128GCM,
-        AES256GCM,
-        Invalid
+    enum method {
+        chacha20_poly1305,
+        aes_128_gcm,
+        aes_256_gcm,
+        invalid
     };
 
-    class DecryptionError : public std::runtime_error {
+    class decryption_error : public std::runtime_error {
     public:
         using std::runtime_error::runtime_error;
     };
 
-    AEAD(Method method);
-    ~AEAD();
+    aead(method method);
+    ~aead();
 
     std::size_t encrypt(std::span<const std::uint8_t> key,
                         std::span<const std::uint8_t> iv,
@@ -37,40 +36,40 @@ public:
                         std::span<const std::uint8_t> ciphertext,
                         std::span<std::uint8_t> plaintext);
 
-    std::size_t getKeySize() const;
-    std::size_t getIvSize() const;
-    std::size_t getTagSize() const;
+    std::size_t get_key_size() const;
+    std::size_t get_iv_size() const;
+    std::size_t get_tag_size() const;
 
-    Method getMethod() const;
+    method get_method() const;
 
-    static constexpr std::size_t keySize(Method method) {
+    static constexpr std::size_t key_size(method method) {
         switch (method) {
-        case ChaCha20Poly1305:
-        case AES256GCM:
+        case chacha20_poly1305:
+        case aes_256_gcm:
             return 32;
-        case AES128GCM:
+        case aes_128_gcm:
             return 16;
         default:
             return 0;
         }
     }
 
-    static constexpr std::size_t ivSize(Method method) {
+    static constexpr std::size_t iv_size(method method) {
         switch (method) {
-        case ChaCha20Poly1305:
-        case AES256GCM:
-        case AES128GCM:
+        case chacha20_poly1305:
+        case aes_256_gcm:
+        case aes_128_gcm:
             return 12;
         default:
             return 0;
         }
     }
 
-    static constexpr std::size_t tagSize(Method method) {
+    static constexpr std::size_t tag_size(method method) {
         switch (method) {
-        case ChaCha20Poly1305:
-        case AES256GCM:
-        case AES128GCM:
+        case chacha20_poly1305:
+        case aes_256_gcm:
+        case aes_128_gcm:
             return 16;
         default:
             return 0;
@@ -78,10 +77,9 @@ public:
     }
 
 private:
-    Method method;
+    method m;
     void* ptr;
 };
-} // namespace aead
 } // namespace crypto
 
 #endif

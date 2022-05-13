@@ -12,7 +12,7 @@ namespace base64 {
 std::vector<std::uint8_t> encode(std::span<const std::uint8_t> src);
 
 // decode decode base64 encoded src to original format.
-// throw `DecodingError` if the base64 characters are invalid.
+// throw `decoding_error` if the base64 characters are invalid.
 std::vector<std::uint8_t> decode(std::span<const std::uint8_t> src);
 } // namespace base64
 } // namespace codec

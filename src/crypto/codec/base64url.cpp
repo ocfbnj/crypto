@@ -25,12 +25,12 @@ std::vector<std::uint8_t> encode(std::span<const std::uint8_t> src) {
 }
 
 // decode decode base64url encoded src to original format.
-// throw `DecodingError` if the base64url characters are invalid.
+// throw `decoding_error` if the base64url characters are invalid.
 std::vector<std::uint8_t> decode(std::span<const std::uint8_t> src) {
     std::vector<std::uint8_t> data{src.begin(), src.end()};
     if (auto m = data.size() % 4; m != 0) {
         if (m == 1) {
-            throw crypto::codec::DecodingError{"base64url invalid input"};
+            throw crypto::codec::decoding_error{"base64url invalid input"};
         }
 
         if (m == 2) {

@@ -5,7 +5,7 @@
 
 namespace crypto {
 namespace codec {
-class DecodingError : public std::runtime_error {
+class decoding_error : public std::runtime_error {
 public:
     using runtime_error::runtime_error;
 };

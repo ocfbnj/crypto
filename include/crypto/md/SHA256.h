@@ -7,14 +7,14 @@
 
 namespace crypto {
 namespace md {
-class SHA256 {
+class sha256 {
 public:
-    static constexpr std::size_t Size = 32;
+    static constexpr std::size_t size = 32;
 
     static std::vector<std::uint8_t> get(std::span<const std::uint8_t> msg);
 
-    SHA256();
-    ~SHA256();
+    sha256();
+    ~sha256();
 
     void starts();
     void update(std::span<const std::uint8_t> msg);
