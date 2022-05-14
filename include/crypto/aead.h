@@ -13,7 +13,6 @@ public:
         chacha20_poly1305,
         aes_128_gcm,
         aes_256_gcm,
-        invalid
     };
 
     class decryption_error : public std::runtime_error {
@@ -49,8 +48,6 @@ public:
             return 32;
         case aes_128_gcm:
             return 16;
-        default:
-            return 0;
         }
     }
 
@@ -60,8 +57,6 @@ public:
         case aes_256_gcm:
         case aes_128_gcm:
             return 12;
-        default:
-            return 0;
         }
     }
 
@@ -71,8 +66,6 @@ public:
         case aes_256_gcm:
         case aes_128_gcm:
             return 16;
-        default:
-            return 0;
         }
     }
 
