@@ -41,31 +41,37 @@ public:
 
     method get_method() const;
 
-    static constexpr std::size_t key_size(method method) {
-        switch (method) {
+    static constexpr std::size_t key_size(method m) {
+        switch (m) {
         case chacha20_poly1305:
         case aes_256_gcm:
             return 32;
         case aes_128_gcm:
             return 16;
+        default:
+            return 0;
         }
     }
 
-    static constexpr std::size_t iv_size(method method) {
-        switch (method) {
+    static constexpr std::size_t iv_size(method m) {
+        switch (m) {
         case chacha20_poly1305:
         case aes_256_gcm:
         case aes_128_gcm:
             return 12;
+        default:
+            return 0;
         }
     }
 
-    static constexpr std::size_t tag_size(method method) {
-        switch (method) {
+    static constexpr std::size_t tag_size(method m) {
+        switch (m) {
         case chacha20_poly1305:
         case aes_256_gcm:
         case aes_128_gcm:
             return 16;
+        default:
+            return 0;
         }
     }
 
