@@ -18,7 +18,7 @@ std::span<const std::uint8_t> to_span(const std::string& str);
 // to_string converts a std::span to std::string
 std::string to_string(std::span<const std::uint8_t> str);
 
-// deriveKey generate the master key from a password.
+// derive_key generate the master key from a password.
 void derive_key(std::span<const std::uint8_t> password, std::span<std::uint8_t> key);
 
 // hkdf_sha1 produces a subkey that is cryptographically strong even if the input secret key is weak.
