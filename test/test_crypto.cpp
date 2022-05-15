@@ -126,7 +126,7 @@ TEST(chacha20_poly1305, encrypt) {
     constexpr std::size_t iv_size = aead::iv_size(aead::chacha20_poly1305);
 
     std::array<std::uint8_t, key_size> key{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                          1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+                                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     std::array<std::uint8_t, 5> message{'h', 'e', 'l', 'l', 'o'};
     std::array<std::uint8_t, 5 + tag_size> ciphertext;
     std::array<std::uint8_t, 5 + tag_size> expect_ciphertext{
@@ -146,7 +146,7 @@ TEST(chacha20_poly1305, decrypt) {
     constexpr std::size_t iv_size = aead::iv_size(aead::chacha20_poly1305);
 
     std::array<uint8_t, key_size> key{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+                                      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     std::array<uint8_t, 5 + tag_size> ciphertext{
         105, 66, 33, 189, 129, 203, 219, 231, 140, 85, 21,
         136, 140, 75, 200, 219, 165, 104, 17, 161, 79};
@@ -204,7 +204,7 @@ TEST(aes_256_gcm, encrypt) {
     constexpr std::size_t iv_size = aead::iv_size(aead::aes_256_gcm);
 
     std::array<std::uint8_t, key_size> key{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                          1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+                                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     std::array<std::uint8_t, 5> message{'h', 'e', 'l', 'l', 'o'};
     std::array<std::uint8_t, 5 + tag_size> ciphertext;
     std::array<std::uint8_t, 5 + tag_size> expect_ciphertext{
@@ -224,7 +224,7 @@ TEST(aes_256_gcm, decrypt) {
     constexpr std::size_t iv_size = aead::iv_size(aead::aes_256_gcm);
 
     std::array<uint8_t, key_size> key{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+                                      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     std::array<uint8_t, 5 + tag_size> ciphertext{
         215, 80, 244, 176, 26, 211, 81, 171, 33, 189, 255,
         36, 184, 218, 230, 78, 146, 114, 221, 155, 24};
@@ -238,22 +238,22 @@ TEST(aes_256_gcm, decrypt) {
     ASSERT_EQ(message, expect_message);
 }
 
-TEST(deriveKey, key128) {
+TEST(derive_key, key128) {
     std::array<std::uint8_t, 4> password{'h', 'e', 'h', 'e'};
     std::array<std::uint8_t, 16> key;
     std::array<std::uint8_t, 16> expectKey{82, 156, 168, 5, 10, 0, 24, 7, 144, 207, 136, 182, 52, 104, 130, 106};
 
-    deriveKey(password, key);
+    derive_key(password, key);
     ASSERT_EQ(key, expectKey);
 }
 
-TEST(deriveKey, key256) {
+TEST(derive_key, key256) {
     std::array<std::uint8_t, 4> password{'h', 'e', 'h', 'e'};
     std::array<std::uint8_t, 32> key;
     std::array<std::uint8_t, 32> expectKey{82, 156, 168, 5, 10, 0, 24, 7, 144, 207, 136, 182, 52, 104, 130, 106,
                                            109, 81, 225, 207, 24, 87, 148, 16, 101, 57, 172, 239, 219, 100, 183, 95};
 
-    deriveKey(password, key);
+    derive_key(password, key);
     ASSERT_EQ(key, expectKey);
 }
 
@@ -274,7 +274,7 @@ TEST(hkdf_sha1, key256) {
                                       '1', '2', '3', '4', '5', '6', '7', '8', '1', '2', '3', '4', '5', '6', '7', '8'};
     std::array<std::uint8_t, 32> subkey;
     std::array<std::uint8_t, 32> expect_subkey{128, 145, 113, 44, 108, 52, 99, 117, 243, 229, 199, 245, 55, 99, 251, 53,
-                                              56, 225, 92, 92, 5, 94, 252, 21, 4, 211, 164, 43, 251, 44, 61, 208};
+                                               56, 225, 92, 92, 5, 94, 252, 21, 4, 211, 164, 43, 251, 44, 61, 208};
 
     hkdf_sha1(key, salt, to_span("ss-subkey"), subkey);
     ASSERT_EQ(subkey, expect_subkey);
