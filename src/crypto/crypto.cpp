@@ -39,7 +39,7 @@ std::string to_string(std::span<const std::uint8_t> str) {
     return std::string{reinterpret_cast<const char*>(str.data()), str.size()};
 }
 
-void deriveKey(std::span<const std::uint8_t> password, std::span<std::uint8_t> key) {
+void derive_key(std::span<const std::uint8_t> password, std::span<std::uint8_t> key) {
     std::size_t key_size = key.size();
 
     const mbedtls_md_info_t* md = mbedtls_md_info_from_type(MBEDTLS_MD_MD5);
